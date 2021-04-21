@@ -1,4 +1,4 @@
-
+--University Database--
 
 DROP TABLE IF EXISTS Professor CASCADE;
 CREATE TABLE Professor (ssn NUMERIC (9, 0),
@@ -17,13 +17,12 @@ DROP TABLE IF EXISTS Project CASCADE;
 CREATE TABLE Project (pno NUMERIC (9, 0),
 			ssn NUMERIC (9, 0), --Prof ssn
 			sponsor CHAR(20),
-			start_date CHAR(10),
-			end_date CHAR(10),
+			start_date DATE,
+			end_date DATE,
 			budget INTEGER,
-			PRIMARY KEY(pno));--, 
---			FOREIGN KEY (ssn) REFERENCES Professor(ssn) -- Prof manages
---			ON DELETE CASCADE); -- participation constraint
-
+			PRIMARY KEY(pno)), 
+			FOREIGN KEY (ssn) REFERENCES Professor(ssn) -- Prof manages
+			ON DELETE CASCADE); -- participation constraint
 
 DROP TABLE IF EXISTS Dept CASCADE;
 CREATE TABLE Dept (dno NUMERIC (9, 0),
@@ -36,13 +35,13 @@ CREATE TABLE Dept (dno NUMERIC (9, 0),
 
 DROP TABLE IF EXISTS Graduate CASCADE;
 CREATE TABLE Graduate (gssn NUMERIC (9, 0),
-			dno NUMERIC (9, 0),
+			dno NUMERIC (9, 0),	-- Dept ID
 			gname CHAR(30) NOT NULL,
 			age INTEGER,
 			deg_pg CHAR(20),
-			PRIMARY KEY(gssn));--,  --TA said unecessary but idk kinda need it
---			FOREIGN KEY (dno) REFERENCES Dept(dno) -- Major
---			ON DELETE CASCADE); -- participation consraint
+			PRIMARY KEY(gssn)),	--TA said unecessary but idk kinda need it
+			FOREIGN KEY (dno) REFERENCES Dept(dno)	-- Major
+			ON DELETE CASCADE);	-- participation consraint
 
 DROP TABLE IF EXISTS work_in CASCADE;
 CREATE TABLE work_in (ssn NUMERIC (9, 0),
@@ -54,36 +53,33 @@ CREATE TABLE work_in (ssn NUMERIC (9, 0),
 DROP TABLE IF EXISTS work_dept CASCADE;
 CREATE TABLE work_dept (ssn NUMERIC (9, 0),
 			dno NUMERIC (9, 0),
-			time_pc CHAR(10),
+			time_pc INTEGER,
 			PRIMARY KEY (ssn, dno),
 			FOREIGN KEY (ssn) REFERENCES Professor(ssn),
 			FOREIGN KEY (dno) REFERENCES Dept(dno));
 
 DROP TABLE IF EXISTS work_proj_supervise_manage_advise CASCADE;	--aggregate
-CREATE TABLE work_proj (pno NUMERIC (9, 0),
+CREATE TABLE work_proj (ssn NUMERIC (9, 0),
 			gssn NUMERIC (9, 0),
-			dno NUMERIC (9, 0),
+			pno NUMERIC (9, 0),
 			since CHAR(10),
-			PRIMARY KEY (pno, gssn),
-			FOREIGN KEY (pno) REFERENCES Project(pno),
+			PRIMARY KEY (ssn, gssn, pno),
+			FOREIGN KEY (ssn) REFERENCES Professor(ssn),
 			FOREIGN KEY (gssn) REFERENCES Graduate(gssn),
-			FOREIGN KEY (dno) REFERENCES Dept(dno)
+			FOREIGN KEY (pno) REFERENCES Project(pno)
 			ON DELETE CASCADE); -- participation constratraint
 
---DROP TABLE IF EXISTS Advise CASCADE; -- advisor (graduate self-relation)
---CREATE TABLE Advise (advisor_ssn NUMERIC (9, 0),
---			advisee_ssn NUMERIC (9, 0),
---			PRIMARY KEY (advisor_ssn, advisee_ssn),
---			FOREIGN KEY(advisor_ssn) REFERENCES Graduate(gssn),
---			FOREIGN KEY(advisee_ssn) REFERENCES Graduate(gssn));
+DROP TABLE IF EXISTS Advise CASCADE; -- advisor (graduate self-relation)
+CREATE TABLE Advise (advisor_ssn NUMERIC (9, 0),
+			advisee_ssn NUMERIC (9, 0),
+			PRIMARY KEY (advisor_ssn, advisee_ssn),
+			FOREIGN KEY(advisor_ssn) REFERENCES Graduate(gssn),
+			FOREIGN KEY(advisee_ssn) REFERENCES Graduate(gssn));
 			
 
---DROP TABLE Advise
---DROP TABLE work_proj;
---DROP TABLE work_dept;
---DROP TABLE work_in;
---DROP TABLE Graduate;
---DROP TABLE Dept;
---DROP TABLE Project;
---DROP TABLE Professor;
+--Notown Database--
+
+
+
+
 
