@@ -79,6 +79,68 @@ CREATE TABLE Advise (advisor_ssn NUMERIC (9, 0),
 
 --Notown Database--
 
+OP TABLE IF EXISTS Musician CASCADE;
+CREATE TABLE Musician (ssn NUMERIC (9, 0),
+			name CHAR(30),
+			PRIMARY KEY(ssn));
+
+DROP TABLE IF EXISTS Album_Producer CASCADE;
+CREATE TABLE Album (albumid NUMERIC (9, 0),
+			ssn NUMERIC (9, 0),	-- Musician ssn
+			copyright_date DATE,
+			speed INTEGER,
+			title CHAR(20),
+			PRIMARY KEY(albumid)
+			FOREIGN KEY(ssn) REFERENCES Musician(ssn));	--Producer reation
+
+DROP TABLE IF EXISTS Instrument CASCADE;
+CREATE TABLE Instrument (instrid NUMERIC (9, 0),
+				dname CHAR(20),
+				key CHAR(20),
+				PRIMARY KEY(instrid));
+
+DROP TABLE IF EXISTS Place CASCADE;
+CREATE TABLE Place (address CHAR(30),
+			PRIMARY KEY(address));
+
+DROP TABLE IF EXISTS Telephone_Home CASCADE;
+CREATE TABLE Telephone (phone_no CHAR(11),
+			address CHAR(30),
+			PRIMARY KEY(phone_no),
+			FOREIGN KEY(address) REFERENCES Place(address));
+
+DROP TABLE IF EXISTS Songs_Appears CASCADE;
+CREATE TABLE Songs (songid NUMERIC (9, 0),
+			albumid NUMERIC (9, 0),	-- Album id
+			title CHAR(20),
+			author CHAR(20),
+			PRIMARY KEY(songid),
+			FOREIGN KEY(albumid) REFERENCES Album(albumid));	--Appears relation
+
+DROP TABLE IF EXISTS Plays CASCADE;
+CREATE TABLE Plays (ssn NUMERIC (9, 0),
+			instrid NUMERIC (9, 0),
+			PRIMARY KEY(ssn, instrid),
+			FOREIGN KEY(ssn) REFERENCES Musician(ssn),
+			FOREIGN KEY(instrid) REFERENCES Instrument(instrid));
+
+DROP TABLE IF EXISTS Perform CASCADE;
+CREATE TABLE Perform (ssn NUMERIC (9, 0),
+			songid NUMERIC (9, 0),
+			PRIMARY KEY(ssn, songid),
+			FOREIGN KEY(ssn) REFERENCES Musician(ssn),
+			FOREIGN KEY(songid) REFERENCES Songs(songid));
+
+DROP TABLE IF EXISTS Lives CASCADE;
+CREATE TABLE Lives (ssn NUMERIC (9, 0),
+			address CHAR(30),
+			phone_no CHAR(11),
+			PRIMARY KEY(ssn),
+			FOREIGN KEY(ssn) REFERENCES Musician(ssn),
+			FOREIGN KEY(address) REFERENCES Place(address),
+			FOREIGN KEY(phone_no) REFERENCES Telephone_Home(phone_no),);
+
+
 
 
 
