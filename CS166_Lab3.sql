@@ -46,7 +46,7 @@ CREATE TABLE Graduate_Major (gssn NUMERIC (9, 0),
 			age INTEGER,
 			deg_pg CHAR(20),
 			PRIMARY KEY(gssn),
-			FOREIGN KEY (dno) REFERENCES Dept(dno)	-- Major
+			FOREIGN KEY (dno) REFERENCES Dept_Runs(dno)	-- Major
 			ON DELETE CASCADE);	-- participation consraint
 
 DROP TABLE IF EXISTS work_in CASCADE;
@@ -54,7 +54,7 @@ CREATE TABLE work_in (ssn NUMERIC (9, 0),
 			pno NUMERIC (9, 0),
 			PRIMARY KEY (ssn, pno),
 			FOREIGN KEY (ssn) REFERENCES Professor(ssn),
-			FOREIGN KEY (pno) REFERENCES Project(pno));
+			FOREIGN KEY (pno) REFERENCES Project_Manages(pno));
 
 DROP TABLE IF EXISTS work_dept CASCADE;
 CREATE TABLE work_dept (ssn NUMERIC (9, 0),
@@ -62,7 +62,7 @@ CREATE TABLE work_dept (ssn NUMERIC (9, 0),
 			time_pc INTEGER,
 			PRIMARY KEY (ssn, dno),
 			FOREIGN KEY (ssn) REFERENCES Professor(ssn),
-			FOREIGN KEY (dno) REFERENCES Dept(dno));
+			FOREIGN KEY (dno) REFERENCES Dept_Runs(dno));
 
 DROP TABLE IF EXISTS work_proj_supervise_manage_advise CASCADE;	--aggregate
 CREATE TABLE work_proj_supervise_manage_advise (ssn NUMERIC (9, 0),
@@ -71,16 +71,16 @@ CREATE TABLE work_proj_supervise_manage_advise (ssn NUMERIC (9, 0),
 			since CHAR(10),
 			PRIMARY KEY (ssn, gssn, pno),
 			FOREIGN KEY (ssn) REFERENCES Professor(ssn),
-			FOREIGN KEY (gssn) REFERENCES Graduate(gssn),
-			FOREIGN KEY (pno) REFERENCES Project(pno)
+			FOREIGN KEY (gssn) REFERENCES Graduate_Major(gssn),
+			FOREIGN KEY (pno) REFERENCES Project_Manages(pno)
 			ON DELETE CASCADE); -- participation constratraint
 
 DROP TABLE IF EXISTS Advise CASCADE; -- advisor (graduate self-relation)
 CREATE TABLE Advise (advisor_ssn NUMERIC (9, 0),
 			advisee_ssn NUMERIC (9, 0),
 			PRIMARY KEY (advisor_ssn, advisee_ssn),
-			FOREIGN KEY(advisor_ssn) REFERENCES Graduate(gssn),
-			FOREIGN KEY(advisee_ssn) REFERENCES Graduate(gssn));
+			FOREIGN KEY(advisor_ssn) REFERENCES Graduate_Major(gssn),
+			FOREIGN KEY(advisee_ssn) REFERENCES Graduate_Major(gssn));
 			
 
 --Notown Database--
@@ -121,7 +121,7 @@ CREATE TABLE Songs_Appears (songid NUMERIC (9, 0),
 			title CHAR(20),
 			author CHAR(20),
 			PRIMARY KEY(songid),
-			FOREIGN KEY(albumid) REFERENCES Album(albumid));	--Appears relation
+			FOREIGN KEY(albumid) REFERENCES Album_Producer(albumid));	--Appears relation
 
 DROP TABLE IF EXISTS Plays CASCADE;
 CREATE TABLE Plays (ssn NUMERIC (9, 0),
@@ -135,7 +135,7 @@ CREATE TABLE Perform (ssn NUMERIC (9, 0),
 			songid NUMERIC (9, 0),
 			PRIMARY KEY(ssn, songid),
 			FOREIGN KEY(ssn) REFERENCES Musician(ssn),
-			FOREIGN KEY(songid) REFERENCES Songs(songid));
+			FOREIGN KEY(songid) REFERENCES Songs_Appears(songid));
 
 DROP TABLE IF EXISTS Lives CASCADE;
 CREATE TABLE Lives (ssn NUMERIC (9, 0),
