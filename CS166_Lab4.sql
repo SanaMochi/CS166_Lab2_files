@@ -127,8 +127,8 @@ FROM Students S
 WHERE S.age>30 AND S.major!='CS';
 
 --7--
-ALTER TABLE Authors
-RENAME COLUMN aname TO name;
+SELECT A.aname AS name
+FROM Authors A;
 
 --8--
 SELECT S.stname
