@@ -19,8 +19,8 @@ FROM catalog C, parts P, suppliers S
 WHERE C.pid = P.pid AND C.sid = S.sid AND P.color = 'Green';
 
 -- (5) for each supplier, list supplier's name along with all parts' name that it supply
-SELECT S.sname, P.pname
+SELECT DISTINCT S.sname, P.pname
 FROM catalog C, parts P, suppliers S
-WHERE C.pid = P.pid AND C.sid = S.sid AND 
+WHERE C.pid = P.pid AND C.sid = S.sid;
 
 
