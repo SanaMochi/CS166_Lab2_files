@@ -1,11 +1,11 @@
 -- (1) total number of parts supplied by each supplier
-SELECT COUNT(*)
+SELECT S.sid, COUNT(*)
 FROM catalog C, parts P, suppliers S
 WHERE C.pid = P.pid AND C.sid = S.sid
 GROUP BY S.sid;
 
 -- (2) total number of parts supplied by each supplier who supplies at least 3 parts
-SELECT COUNT(*)
+SELECT S.sid, COUNT(*)
 FROM catalog C, parts P, suppliers S
 WHERE C.pid = P.pid AND C.sid = S.sid AND 2 < (SELECT COUNT(*) 
 					       FROM catalog C, parts P
