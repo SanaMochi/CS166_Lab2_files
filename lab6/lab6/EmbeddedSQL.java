@@ -250,38 +250,80 @@ public class EmbeddedSQL {
    
    public static void Query1(EmbeddedSQL esql){
       // Your code goes here.
-      // ...
-      // ...
-   }//end Query1
+      try{
+	 String query = "SELECT S.sid, COUNT(*) FROM catalog C, parts P, suppliers S WHERE C.pid = P.pid AND C.sid = S.sid GROUP BY S.sid";
+
+	 int rowCount = esql.executeQuery(query);
+	 System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+	 System.err.println (e.getMessage());
+      }
+  }//end Query1
 
    public static void Query2(EmbeddedSQL esql){
       // Your code goes here.
-      // ...
-      // ...
+      try{
+	 String query = "SELECT S.sid, COUNT(*) FROM catalog C, parts P, suppliers S WHERE C.pid = P.pid AND C.sid = S.sid AND 2 < (SELECT COUNT(*) FROM catalog C2, parts P2 WHERE C2.pid = P2.pid AND C2.sid = S.sid) GROUP BY S.sid";
+
+	 int rowCount = esql.executeQuery(query);
+	 System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+	 System.err.println (e.getMessage());
+      }
    }//end Query2
 
    public static void Query3(EmbeddedSQL esql){
       // Your code goes here.
-      // ...
-      // ...
+	 try{
+	 String query = "SELECT S.sname, COUNT(*) FROM catalog C, parts P, suppliers S WHERE C.pid = P.pid AND C.sid = S.sid AND NOT EXISTS (SELECT * FROM catalog C2, parts P2, suppliers S2 WHERE C2.pid = P2.pid AND C2.sid = S2.sid AND S.sid = S2.sid AND P2.color != 'Green') GROUP BY S.sname";
+
+	 int rowCount = esql.executeQuery(query);
+	 System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+	 System.err.println (e.getMessage());
+      }
    }//end Query3
 
    public static void Query4(EmbeddedSQL esql){
       // Your code goes here.
-      // ...
-      // ...
+      try{
+	 String query = "SELECT S.sname, MAX(C.cost) FROM catalog C, parts P, suppliers S WHERE C.pid = P.pid AND C.sid = S.sid AND EXISTS (SELECT * FROM catalog C2, parts P2, suppliers S2 WHERE C2.pid = P2.pid AND C2.sid = S2.sid AND S.sid = S2.sid AND P2.color = 'Green') AND EXISTS (SELECT * FROM catalog C3, parts P3, suppliers S3 WHERE C3.pid = P3.pid AND C3.sid = S3.sid AND S.sid = S3.sid AND P3.color = 'Red') GROUP BY S.sname";
+	 
+	 int rowCount = esql.executeQuery(query);
+	 System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+	 System.err.println (e.getMessage());
+      }  
    }//end Query4
 
    public static void Query5(EmbeddedSQL esql){
       // Your code goes here.
-      // ...
-      // ...
+      try{
+	 String query = "SELECT P.pname FROM catalog C, parts P WHERE C.pid = P.pid AND C.cost <";
+	 System.out.print("\tEnter cost: $");
+	 String input = in.readLine();
+	 query += input;
+
+	 int rowCount = esql.executeQuery(query);
+	 System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+	 System.err.println (e.getMessage());
+      }
    }//end Query5
 
    public static void Query6(EmbeddedSQL esql){
       // Your code goes here.
-      // ...
-      // ...
+      try{
+	 String query = "SELECT S.address FROM catalog C, parts P, suppliers S WHERE C.pid = P.pid AND C.sid = S.sid AND P.pname =";
+	 System.out.print("\tEnter part name: $");
+	 String input = in.readLine();
+	 query += input;
+
+	 int rowCount = esql.executeQuery(query);
+	 System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+	 System.err.println (e.getMessage());
+      }
    }//end Query6
 
 }//end EmbeddedSQL
