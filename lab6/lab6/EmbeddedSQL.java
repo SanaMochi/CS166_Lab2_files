@@ -315,9 +315,10 @@ public class EmbeddedSQL {
       // Your code goes here.
       try{
 	 String query = "SELECT S.address FROM catalog C, parts P, suppliers S WHERE C.pid = P.pid AND C.sid = S.sid AND P.pname =";
-	 System.out.print("\tEnter part name: $");
+	 System.out.print("\tEnter part name: ");
 	 String input = in.readLine();
 	 query += input;
+//	 query += "GROUP BY S.address";
 
 	 int rowCount = esql.executeQuery(query);
 	 System.out.println ("total row(s): " + rowCount);
