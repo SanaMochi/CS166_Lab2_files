@@ -5,8 +5,9 @@ WHERE N.on_hand > 70;
 
 -- (2) Count how many total parts on hand in both NYC and SFO are Red
 SELECT (SUM(N.on_hand) + SUM(S.on_hand))
-FROM part_nyc N, part_sfc S
-WHERE N.color = 'Red' OR S.color = 'Red';
+FROM part_nyc N, part_sfo S
+WHERE N.color = (SELECT color_id FROM color C WHERE C.color_name = 'Red') OR 
+      S.color = (SELECT color_id FROM color C WHERE C.color_name = 'Red');
 
 -- (3) List all the suppliers that have more total on_hand parts in NYC than they do in SFO
 SELECT N.supplier
